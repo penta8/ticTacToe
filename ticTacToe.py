@@ -1,11 +1,10 @@
-# new board
+import os
 
 
 def newBoard():
-    board = [[' ', ' ', ' '],
-             [' ', ' ', ' '],
-             [' ', ' ', ' ']]
-    return board
+    return [[' ', ' ', ' '],
+            [' ', ' ', ' '],
+            [' ', ' ', ' ']]
 
 
 def isBoardFull(board):
@@ -54,30 +53,43 @@ def updateBoard(position, player, board):
 
 
 def changePlayer(player):
-    if player == 'x':
-        return 'y'
+    if player == 'X':
+        return 'O'
     else:
-        return 'x'
+        return 'X'
 
 
 def win(board, pl):
-    return (board[0][0] == pl and board[0][1] == pl and board[0][2] == pl) or \
-           (board[0][0] == pl and board[1][0] == pl and board[2][0] == pl) or \
-           (board[0][0] == pl and board[1][1] == pl and board[2][2] == pl) or \
+    return (board[0][0] == pl and ((board[0][1] == pl and board[0][2] == pl) or \
+                                   (board[1][0] == pl and board[2][0] == pl) or \
+                                   (board[1][1] == pl and board[2][2] == pl))) or \
            (board[1][0] == pl and board[1][1] == pl and board[1][2] == pl) or \
            (board[2][0] == pl and board[2][1] == pl and board[2][2] == pl) or \
            (board[0][1] == pl and board[1][1] == pl and board[2][1] == pl) or \
-           (board[0][2] == pl and board[1][2] == pl and board[2][2] == pl) or \
-           (board[0][2] == pl and board[1][1] == pl and board[2][0] == pl)
+           (board[0][2] == pl and ((board[1][2] == pl and board[2][2] == pl) or \
+                                   (board[1][1] == pl and board[2][0] == pl)))
+
+
+def validPosition(pos):
+    return pos in ['A1', 'B1', 'C1',
+                   'A2', 'B2', 'C2',
+                   'A3', 'B3', 'C3']
 
 
 board = newBoard()
-player = 'x'
+player = 'X'
 while not isBoardFull(board):
     showBoard(board)
+    print('PLAYER ' + player)
     print('Select a position in the format LetterNumber ' +\
           'for example A1 not being used: ', end='')
-    position = input()
+    position = input().upper()
+
+    os.system('clear')
+    if not validPosition(position):
+        print('INVALID POSITION')
+        continue
+
     if usedPosition(position, board):
         print('This position is already used...')
         continue
