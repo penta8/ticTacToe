@@ -8,9 +8,9 @@ def newBoard():
 
 
 def isBoardFull(board):
-    for row in range(3):
-        for column in range(3):
-            if board[row][column] == ' ':
+    for row in board:
+        for column in row:
+            if column == ' ':
                 return False
     return True
 
